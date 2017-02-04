@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="C:/Program Files/Java/jre1.8.0_77/lib/joptimizer-3.5.1-sources.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/Computelli"/>
+	<classpathentry kind="lib" path="C:/Program Files/Java/jdk1.8.0_77/lib/mysql-connector-java-5.1.38-bin.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

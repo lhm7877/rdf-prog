@@ -1,0 +1,21 @@
+@prefix rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#>.
+@prefix rdfs:<http://www.w3.org/2000/01/rdf-schema#>.
+@prefix ex:<http://example.org/>.
+@prefix zoo:<http://example.org/zoo/>.
+ex:a ex:p ex:b.
+ex:p rdfs:domain ex:c.
+
+ex:x rdfs:subClassOf ex:z.
+ex:y rdfs:domain ex:x.
+
+ex:InfoExt a rdf:Property;
+	rdfs:domain ex:Ref;
+	rdf:ID	"exInfoExtract";
+	rdfs:range ex:StructuredRef.
+	
+ex:String a rdfs:Class.
+
+ex:Ref	a ex:String;
+		rdf:ID	"exReferences".
+
+ex:Structured a rdfs:Class.
