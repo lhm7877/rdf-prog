@@ -238,6 +238,7 @@ public class Graph2<V, E> {
 			Graph2 kGraph) {
 
 		// 아래 코드들이 필요한가?
+		
 		// 노드들의 apply 결과를 담을 outputStack이다.
 		// input의 다음 노드를 제일 아래에 깔아둔다(여기선 infoExtract)
 		// input의 다음 노드(연산자 노드라고 생각) 연산자 노드를 업그레이드 시킨 연산자를 만들어야 하기 때문

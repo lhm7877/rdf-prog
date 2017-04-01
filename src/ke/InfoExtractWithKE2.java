@@ -3,18 +3,7 @@ package ke;
 //import RefSet;
 //import ShellCommander;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.PriorityQueue;
 import java.util.Stack;
 
@@ -22,6 +11,16 @@ import addition.Computelli;
 import addition.Node2;
 
 class CRFmodel{
+	
+	public CRFmodel()
+	{
+		
+	}
+	public CRFmodel(String aModelName)
+	{
+		this.crfModelName = aModelName;
+	}
+	String crfModelName;
 	
 }
 
