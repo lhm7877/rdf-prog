@@ -5,9 +5,11 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.HashMap;
 
 // 원래는 DB로부터 가져와야 하는 것
 public class Classifier {
+	public static HashMap<String, CRFmodel> modelHashMap = new HashMap<String, CRFmodel>();  
 
 	public static String modelname = "";
 
@@ -34,7 +36,7 @@ public class Classifier {
 		return resultModelPath;
 	}
 
-	public static void classify(String testData, String modelPath, String pred) {
+	public static String classify(String testData, String modelPath, String pred) {
 		// model을 사용해 style을 분류하는 작업이다.
 		// testData string으로 테스트 데이터를 로컬에 만든다.
 		System.out.println("svm classify model 위치 : " + modelPath + "\n  testData String : " + testData + "...");
@@ -50,19 +52,24 @@ public class Classifier {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+		String resultPath = path + "example4/" +pred;
 		//현재는 refText로 테스트하지 않고 기본 textData로 한다
-		String command = path + "svm_multiclass_classify.exe " + path+"example4/test.dat" + " " + modelPath + " " + path
-				+ "example4/"+pred;
+		String command = path + "svm_multiclass_classify.exe " + path+"example4/test.dat" + " " + modelPath + " " + resultPath;
 		System.out.println("learn command: "+command);
 
-		 executeSystemCommand(command);
+		executeSystemCommand(command);
+		return resultPath;
 	}
 
-	public static String getModelName() {
-		//model을 사용해 분류한 결과에서 style 이름을 뽑기 위한 함수
-		String modelName = "";
-		return modelName;
+	public static HashMap<String, CRFmodel> getCRFModelHashMap(String classifiedModelPath) {
+		//model을 사용해 분류한 결과에서 style 이름을 뽑고 hashmap에 style이름과 crfModel경로를 넣어주는 함수
+		String crfModelName = "";
+		
+		//svm classify 결과 파일에서 IEEE를 찾았다고 한다면
+		crfModelName = "IEEE";
+		
+		modelHashMap.put(crfModelName, new CRFmodel(classifiedModelPath));
+		return modelHashMap;
 
 	}
 

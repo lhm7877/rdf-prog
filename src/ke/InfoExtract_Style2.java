@@ -1,5 +1,7 @@
 package ke;
 
+import java.util.HashMap;
+
 public class InfoExtract_Style2 {
 	
 	// style 분류 모델 
@@ -32,24 +34,24 @@ public class InfoExtract_Style2 {
 		//modelPath : classify에 사용될 model 파일의 위치이다.
 		//classify 결과물 : classify 후 분류한 파일의 이름이다.
 		// 분류한 결과를 다시 train.dat에 추가시켜 train 데이터의 양을 늘리는것을 지향.
-		Classifier.classify(refText, resultModelPath, "model_result");
-		String InfoExtract_Style = Classifier.getModelName(); // ref에 style 이름
+		String classifiedModelPath = Classifier.classify(refText, resultModelPath, "model_result");
+		HashMap<String, CRFmodel> modelHashMap = Classifier.getCRFModelHashMap(classifiedModelPath); // ref에 style 이름
 		
 		
 		// 질문 :Ref_Style은 style을 가진 Ref 객체이다. 
 		// 그렇다면 Classifier.classify()의 결과를 Ref_Style의 String style에 넣어야 할 것이다.
 		// RefSet이 그 역할을 수행하고 있는 것인가?
-		RefSet
 		// DB에 있는  Ref_Style에 setText로 text에 ref_Style.text를 집어넣었었다. 그 RefStyle에 ref_style.style을 지정하고
 		// InfoExtract.Infoextract()를 할 때에는 ref_Style을 넘겨주면 ref_Style.text와 ref_Style.style을 이용해 style에 맞게 InfoExtract가 가능할 것이다.
 		// Ref_Style을 실행하는 부분은 아직 없다. pathFindingAStar과정에서 새로 생긴 InfoExtract_Style로 넘어간 뒤 InfoExtract에서 DFS 후 노드들을 stack에 쌓은 후 실행하여야 한다.
 		// 이 때 Ref_Style의 setText를 실행(applyNode)할 때 (Ref, Ref_Style은 연산자인가?) ref text를 넣어주고, InfoExtract_Style 즉 이 클래스를 실행할 때 Ref_Style.style에 style을 세팅해준다.
 		
-		Ref_Style ref_Style = new Ref_Style();
-		ref_Style.Style = InfoExtract_Style;
+//		Ref_Style ref_Style = new Ref_Style();
+//		ref_Style.Style = InfoExtract_Style;
 
-		//TODO:여기서 ref_Style을 넘겨준다.
-		InfoExtract.InfoExtract(, new CRFmodel(InfoExtract_Style));
+//		TODO:여기서 ref_Style을 넘겨준다.
+		
+		InfoExtract.InfoExtract(, modelHashMap.get(key));
 
 	}
 	

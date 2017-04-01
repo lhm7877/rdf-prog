@@ -10,19 +10,7 @@ import java.util.Stack;
 import addition.Computelli;
 import addition.Node2;
 
-class CRFmodel{
-	
-	public CRFmodel()
-	{
-		
-	}
-	public CRFmodel(String aModelName)
-	{
-		this.crfModelName = aModelName;
-	}
-	String crfModelName;
-	
-}
+
 
 public class InfoExtractWithKE2{
 

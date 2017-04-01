@@ -9,7 +9,7 @@ public class InfoExtract{
 
 
 
-public static void InfoExtract (RefSet aRef, CRFmodel b) // aRef is an instance of RefSet, b
+public static void InfoExtract (Ref aRef, CRFmodel b) // aRef is an instance of RefSet, b
 
 {
 
