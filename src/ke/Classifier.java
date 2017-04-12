@@ -5,11 +5,14 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.HashMap;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import addition.ConnectionAlgoDB;
 
 // 원래는 DB로부터 가져와야 하는 것
 public class Classifier {
-	public static HashMap<String, CRFmodel> modelHashMap = new HashMap<String, CRFmodel>();  
+//	public static HashMap<String, CRFmodel> modelHashMap = new HashMap<String, CRFmodel>();  
 
 	public static String modelname = "";
 
@@ -61,15 +64,24 @@ public class Classifier {
 		return resultPath;
 	}
 
-	public static HashMap<String, CRFmodel> getCRFModelHashMap(String classifiedModelPath) {
-		//model을 사용해 분류한 결과에서 style 이름을 뽑고 hashmap에 style이름과 crfModel경로를 넣어주는 함수
+	public static String getCRFModelPath(String classifiedModelPath) {
+		//model을 사용해 분류한 결과에서 style 이름을 뽑고 DB에 해당 스타일에 맞는 CRFModel을 가져와 저장한 뒤 그 경로를 반환한다.
 		String crfModelName = "";
 		
 		//svm classify 결과 파일에서 IEEE를 찾았다고 한다면
 		crfModelName = "IEEE";
+		ResultSet rs = ConnectionAlgoDB.getCRFModelbyStyleName(crfModelName);
+		String CRFModelPath="";
+		try {
+			if (rs.next()) {
+				CRFModelPath = rs.getString("path");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		
-		modelHashMap.put(crfModelName, new CRFmodel(classifiedModelPath));
-		return modelHashMap;
+//		modelHashMap.put(crfModelName, new CRFmodel(classifiedModelPath));
+		return CRFModelPath;
 
 	}
 

@@ -9,7 +9,8 @@ public class InfoExtract{
 
 
 
-public static void InfoExtract (Ref aRef, CRFmodel b) // aRef is an instance of RefSet, b
+public static void InfoExtract (String refText,String b) // aRef is an instance of RefSet, b
+											// b : CRFModel의 경로
 
 {
 

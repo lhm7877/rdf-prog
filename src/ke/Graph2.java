@@ -127,9 +127,13 @@ public class Graph2<V, E> {
 	public static void addExtendableNodewithDFS(Node2 current, Graph2 algoGraph, Graph2 kGraph) {
 		// 해당 노드의 InArgType이 점핑 가능한가?(해당 노드 검사)
 		boolean algoFlag = true;
+		if(current.value.equals("infoExtract")){
+			current.inArgType="Ref";
+		}
+		//
 		Node2 extendableNode = isExtendableNode(current.inArgType, algoGraph, kGraph, algoFlag);
 		if (extendableNode != null) {
-			System.out.println("null이아니다" + current.value);
+//			System.out.println("null이아니다" + current.value);
 			arExtendableNode2Queue.offer(extendableNode);
 		}
 
@@ -204,38 +208,26 @@ public class Graph2<V, E> {
 		while (!pathStack.isEmpty()) {
 			// Operator operator = new Operator();
 			Edge2 temp = (Edge2) pathStack.pop();
-			System.out.println(temp.to_Node2.value + " .pop()");
+//			System.out.println(temp.to_Node2.value + " .pop()");
 			// 마지막 노드 실행
 			if (temp.to_Node2.isOperator) {
 				System.out.println("연산자 : " + temp.to_Node2.value);
-				outputStack.push(connectionAlgoDB.execute(temp.to_Node2.value, outputStack, temp.from_Node2.value));
+				String result =connectionAlgoDB.execute(temp.to_Node2.value, outputStack, temp.from_Node2.value); 
+				if(result != null){
+					outputStack.push(result);
+				}
+				
 			} else if (!temp.to_Node2.isOperator) {
 				System.out.println("피연산자 : " + temp.to_Node2.value);
 			}
-			// if (temp.to_Node2.value.equals("String")) {
-			// temp.to_Node2.setOutput("String"); // 마지막 노드의 output를 String으로
-			// 세팅(String 클래스에서 할 일)
-			// }
-			// ConnectionAlgoDB connectionAlgoDB = new ConnectionAlgoDB();
-			// connectionAlgoDB.execute(temp.to_Node2.value, inputStack,
-			// outputStack)
-			// 여기서부터 각 노드들 실행, 연산자 노드인지 DB에서 검색해서 연산자 노드이면
-			// else if (temp.to_Node2.value.equals("typeOf")) {// 이부분을 연산자노드이면
-			// 으로
-			// // 바꾼다.
-			//// operator.run(temp.to_Node2.outEdge2, temp.to_Node2);
-			// } else if (temp.to_Node2.value.equals("Style")) {
-			// temp.to_Node2.setOutput("Style");
-			// } else if (temp.to_Node2.value.equals("propertyOf")) {// 이부분을
-			// // 연산자노드이면
-			// // 으로 바꾼다.
-			// operator.run(temp.to_Node2.outEdge2, temp.to_Node2);
-			// }
+//			if(pathStack.isEmpty()){
+//				connectionAlgoDB.equals(temp.from_Node2.value, outputStack, temp.)
+//			}
 		}
 	}
 
-	public static void pathFindingAStar(Graph2 aGraph2, Node2 fromNode2, Node2 endNode2, Graph2 algoGraph,
-			Graph2 kGraph) {
+	public static void pathFindingAStar(addition.Ref aRef,Graph2 aGraph2, Node2 fromNode2,
+			Node2 endNode2, Graph2 algoGraph, Graph2 kGraph) {
 
 		// 아래 코드들이 필요한가?
 		
@@ -243,6 +235,7 @@ public class Graph2<V, E> {
 		// input의 다음 노드를 제일 아래에 깔아둔다(여기선 infoExtract)
 		// input의 다음 노드(연산자 노드라고 생각) 연산자 노드를 업그레이드 시킨 연산자를 만들어야 하기 때문
 		Stack<String> outputStack = new Stack<String>();
+		outputStack.push(aRef.getText());
 		outputStack.push(fromNode2.outEdge2.get(0).to_Node2.value);
 
 		// ArrayList<Node2> arFinalKNode2List = new ArrayList<Node2>();
@@ -253,30 +246,30 @@ public class Graph2<V, E> {
 			current = open.poll(); // 확장할 노드
 			System.out.println("현재 노드는??????" + current.value);
 			// 선결조건을 여기에 즉, 이전의 것이 방문했으면 오케이, 그렇지 않으면 거기서 다시
-			if (current == null) // current가 null이면 jumping을 시도한다. 즉, 지식 그래프에 접속해서 새로운 pathFindingAStar를 시도한
-			{
+			// current가 null이면 jumping을 시도한다. 즉, 지식 그래프에 접속해서 새로운 pathFindingAStar를 시도한
+			if (current == null) {
 				break;
 			}
 			if (current.equals(endNode2)) { // 현재 노드가 최종노드이면 마치고
 				return;
 			}
-			
+
 			// boolean값은 알고그래프노드인 경우만 true로 한다.
 			extendableNode = isExtendableNode(current.value, algoGraph, kGraph, false);
 			if (extendableNode != null) {
+				ConnectionAlgoDB connectionAlgoDB = new ConnectionAlgoDB();
+				connectionAlgoDB.execute(current.value, outputStack);
 				addExtendableNodewithDFS(extendableNode, algoGraph, kGraph);
 				Stack<Edge2> historystack = new Stack<Edge2>();
 				// 점핑 가능한 노드의 점핑 후 마지막 노드 탐색
 //				Iterator<Node2> itr = arExtendableNode2Queue.iterator();
 				while(!arExtendableNode2Queue.isEmpty()){
-					
 					Node2 aNode2 = arExtendableNode2Queue.poll();
 					// arFinalKNode2List.add(searchFinalNode(aNode2));
 					// historystack = searchFinalNode2(aNode2)식으로 한다면
 					// while문 돌때마다 historyStack에 엣지들이 쌓이는게 아니라 교체됨
 					// 그러므로 historystack을 쌓는(push)방식으로 바꿈
 					// historystack = searchFinalNode2(aNode2);
-
 					Queue<Node2> q = new LinkedList<Node2>();
 					q.offer(aNode2);
 					while (!q.isEmpty()) {
@@ -291,11 +284,9 @@ public class Graph2<V, E> {
 							}
 						}
 					}
-
 					// stack = searchFinalNode(aNode2);
 				}
-				System.out.println("stack 꺼내기");
-
+//				System.out.println("stack 꺼내기");
 				applyKnowledgeNode(historystack, outputStack);
 			}
 			// for(int i =0; i<stack.size(); i++){
@@ -329,9 +320,8 @@ public class Graph2<V, E> {
 				
 				AlgoGraphMaker algoGraphMaker = new AlgoGraphMaker();
 				KGraphMaker kGraphMaker = new KGraphMaker();
-				
-				algoGraphMaker.init(algoGraph);
-				kGraphMaker.init(kGraph);
+				algoGraph = algoGraphMaker.init(algoGraph);
+				kGraph = kGraphMaker.init(kGraph);
 			}
 			ConnectionAlgoDB.updateDB = false;
 
