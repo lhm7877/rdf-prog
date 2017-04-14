@@ -258,7 +258,7 @@ public class Graph2<V, E> {
 			extendableNode = isExtendableNode(current.value, algoGraph, kGraph, false);
 			if (extendableNode != null) {
 				ConnectionAlgoDB connectionAlgoDB = new ConnectionAlgoDB();
-				connectionAlgoDB.execute(current.value, outputStack);
+				connectionAlgoDB.execute(extendableNode.value, outputStack);
 				addExtendableNodewithDFS(extendableNode, algoGraph, kGraph);
 				Stack<Edge2> historystack = new Stack<Edge2>();
 				// 점핑 가능한 노드의 점핑 후 마지막 노드 탐색
