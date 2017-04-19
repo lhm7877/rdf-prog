@@ -97,7 +97,7 @@ public class Graph2<V, E> {
 		Edge2List.add(Edge2);
 	}
 
-	public static Node2 isExtendableNode(String currentValue, Graph2 algoGraph, Graph2 kGraph, boolean algoFlag) {
+	public static Node2 isExtendableNode(String currentValue, Graph2 algoGraph, Graph2<?, ?> kGraph, boolean algoFlag) {
 		Iterator<Node2> itr = algoGraph.Node2List.iterator();
 		// 문제그래프에서 점핑을 하는데 알고리즘 그래프와 지식 그래프 두 곳에서 점핑을 할 수 있는 경우는? -> 해결 : 알고리즘
 		// 그래프가 있을 경우 알고리즘 그래프를 탐색한다.
@@ -127,7 +127,7 @@ public class Graph2<V, E> {
 	public static void addExtendableNodewithDFS(Node2 current, Graph2 algoGraph, Graph2 kGraph) {
 		// 해당 노드의 InArgType이 점핑 가능한가?(해당 노드 검사)
 		boolean algoFlag = true;
-		if(current.value.equals("infoExtract")){
+		if(current.value.equals("InfoExtract")){
 			current.inArgType="Ref";
 		}
 		//
@@ -143,19 +143,19 @@ public class Graph2<V, E> {
 		if (current.inEdge2.isEmpty()) {
 			return;
 		}
-
-		Iterator itr = current.inEdge2.iterator();
-		while (itr.hasNext()) {
-			Edge2 aEdge = (Edge2) itr.next();
-			System.out.println("이터레이터" + aEdge.from_Node2.value);
-			aEdge.from_Node2.visited = true;
-			extendableNode = isExtendableNode(aEdge.from_Node2.value, algoGraph, kGraph, algoFlag);
-			if (extendableNode != null) {
-				System.out.println("null이아니다" + aEdge.from_Node2.value);
-				arExtendableNode2Queue.offer(extendableNode);
-			}
-			addExtendableNodewithDFS(aEdge.from_Node2, algoGraph, kGraph);
-		}
+//
+//		Iterator itr = current.inEdge2.iterator();
+//		while (itr.hasNext()) {
+//			Edge2 aEdge = (Edge2) itr.next();
+//			System.out.println("이터레이터" + aEdge.from_Node2.value);
+//			aEdge.from_Node2.visited = true;
+//			extendableNode = isExtendableNode(aEdge.from_Node2.value, algoGraph, kGraph, algoFlag);
+//			if (extendableNode != null) {
+//				System.out.println("null이아니다" + aEdge.from_Node2.value);
+//				arExtendableNode2Queue.offer(extendableNode);
+//			}
+//			addExtendableNodewithDFS(aEdge.from_Node2, algoGraph, kGraph);
+//		}
 	}
 
 	public static Stack<Node2> searchFinalNode(Node2 node) {
@@ -257,6 +257,9 @@ public class Graph2<V, E> {
 			// boolean값은 알고그래프노드인 경우만 true로 한다.
 			extendableNode = isExtendableNode(current.value, algoGraph, kGraph, false);
 			if (extendableNode != null) {
+				//확장한 노드와 현재 노드를 이어주는 엣지를 만든다.
+				aGraph2.addEdge2(0, "value", 0.0, current, extendableNode);	
+		
 				ConnectionAlgoDB connectionAlgoDB = new ConnectionAlgoDB();
 				connectionAlgoDB.execute(extendableNode.value, outputStack);
 				addExtendableNodewithDFS(extendableNode, algoGraph, kGraph);

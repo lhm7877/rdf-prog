@@ -125,7 +125,6 @@ public class Classifier {
 
 	public static void main(String[] args) {
 		Ref aRef = new Ref();
-		CRFmodel aCRFmodel = new CRFmodel();
 		Classifier aClassifier = new Classifier();
 		String strTraining = "example4/train.dat"; // 입력자료
 		String modelName = "example4/model"; // 모델명

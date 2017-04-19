@@ -1,7 +1,5 @@
 package ke;
 
-import addition.Ref_Style;
-
 public class InfoExtract_Style2 {
 	
 	// style 분류 모델 
@@ -46,14 +44,10 @@ public class InfoExtract_Style2 {
 		// Ref_Style을 실행하는 부분은 아직 없다. pathFindingAStar과정에서 새로 생긴 InfoExtract_Style로 넘어간 뒤 InfoExtract에서 DFS 후 노드들을 stack에 쌓은 후 실행하여야 한다.
 		// 이 때 Ref_Style의 setText를 실행(applyNode)할 때 (Ref, Ref_Style은 연산자인가?) ref text를 넣어주고, InfoExtract_Style 즉 이 클래스를 실행할 때 Ref_Style.style에 style을 세팅해준다.
 		
-		Ref_Style ref_Style = new Ref_Style();
-		ref_Style.setText(refText);
-		ref_Style.Style = crfModelPath;
-
 //		TODO:여기서 ref_Style을 넘겨준다.
 		
 		//TODO : Ref를 넘겨줘야한다.
-		InfoExtract.InfoExtract(ref_Style.getText(), ref_Style.Style);
+		InfoExtract.InfoExtract(refText,new CRFmodel());
 
 	}
 	
