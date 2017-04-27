@@ -65,10 +65,11 @@ public class Graph2<V, E> {
 		}
 	}
 
-	public void addNode2withInArgType(int id, String value, double hScore, boolean isOperator, String inArgType) {
+	public void addNode2withInArgType(int id, String value, double hScore, boolean isOperator, String inArgType,boolean isAlgoGraphNode) {
 		Node2 node2 = new Node2(id, value, hScore, isOperator);
 		node2.inArgType = inArgType;
 		boolean isIn = true;
+		node2.setAlgoGraphNode(isAlgoGraphNode);
 		for (int i = 0; i < Node2List.size(); i++) {
 			if (Node2List.get(i).value.equals(value))
 				isIn = false;
@@ -105,9 +106,9 @@ public class Graph2<V, E> {
 			while (itr.hasNext()) {
 				Node2 aNode2 = itr.next();
 				if ((currentValue.equals(aNode2.value) || aNode2.value.contains(currentValue + "_"))
-						&& aNode2.visited == false) {
+						&& aNode2.dfsVisited == false) {
 					System.out.println("*******************같은거 발견(AlgoGraph) : " + aNode2.value);
-					aNode2.visited = true;
+					aNode2.dfsVisited = true;
 					return aNode2;
 				}
 			}
@@ -115,9 +116,9 @@ public class Graph2<V, E> {
 		Iterator<Node2> itr2 = kGraph.Node2List.iterator();
 		while (itr2.hasNext()) {
 			Node2 aNode2 = itr2.next();
-			if (currentValue.equals(aNode2.value) && aNode2.visited == false) {
+			if (currentValue.equals(aNode2.value) && aNode2.dfsVisited == false) {
 				System.out.println("*******************같은거 발견(KGraph) : " + aNode2.value);
-				aNode2.visited = true;
+				aNode2.dfsVisited = true;
 				return aNode2;
 			}
 		}
@@ -211,14 +212,14 @@ public class Graph2<V, E> {
 //			System.out.println(temp.to_Node2.value + " .pop()");
 			// 마지막 노드 실행
 			if (temp.to_Node2.isOperator) {
-				System.out.println("연산자 : " + temp.to_Node2.value);
+//				System.out.println("연산자 : " + temp.to_Node2.value);
 				String result =connectionAlgoDB.execute(temp.to_Node2.value, outputStack, temp.from_Node2.value); 
 				if(result != null){
 					outputStack.push(result);
 				}
 				
 			} else if (!temp.to_Node2.isOperator) {
-				System.out.println("피연산자 : " + temp.to_Node2.value);
+//				System.out.println("피연산자 : " + temp.to_Node2.value);
 			}
 //			if(pathStack.isEmpty()){
 //				connectionAlgoDB.equals(temp.from_Node2.value, outputStack, temp.)
@@ -258,8 +259,18 @@ public class Graph2<V, E> {
 			extendableNode = isExtendableNode(current.value, algoGraph, kGraph, false);
 			if (extendableNode != null) {
 				//확장한 노드와 현재 노드를 이어주는 엣지를 만든다.
-				aGraph2.addEdge2(0, "value", 0.0, current, extendableNode);	
-		
+				aGraph2.addEdge2(0, "value", 1.0, current, extendableNode);
+				double weight;
+				if(extendableNode.value.equals("InfoExtract_Style")){
+					weight = 0.1;
+				}else{
+					weight = 5.0;
+				}
+				for (Edge2 outEdge : current.outEdge2){
+					aGraph2.addEdge2(0, "value", weight, extendableNode, outEdge.to_Node2);
+				}
+				
+				
 				ConnectionAlgoDB connectionAlgoDB = new ConnectionAlgoDB();
 				connectionAlgoDB.execute(extendableNode.value, outputStack);
 				addExtendableNodewithDFS(extendableNode, algoGraph, kGraph);
@@ -412,9 +423,7 @@ public class Graph2<V, E> {
 		double t_final_cost = t.hScore + cost;
 
 		boolean inOpen = open.contains(t);
-		if (!inOpen || t_final_cost < t.fScore) {// t칸이 현재 open큐에 없다 || t의 휴리스틱
-													// + cost의 비용<t의 현재까지 계산한
-													// fscore
+		if (!inOpen || t_final_cost < t.fScore) {// t칸이 현재 open큐에 없다 || t의 휴리스틱 + cost의 비용<t의 현재까지 계산한 fscore
 			t.fScore = t_final_cost;
 			t.parent = current;
 			if (!inOpen)

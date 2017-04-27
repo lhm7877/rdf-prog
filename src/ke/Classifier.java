@@ -27,14 +27,14 @@ public class Classifier {
 
 	public static String learn(String trainData) {
 		// 결과로 생성될 model의 위치를 알기 위해 model의 위치를 반환한다.
-		System.out.println("svm learn " + trainData + " " + "...");
+//		System.out.println("svm learn " + trainData + " " + "...");
 		String path = "C:/svm_multiclass_windows/";
 		String resultModelPath = path + trainData + ".model"; // trainData.dat가
 																// 있는 위치에
 																// trainData.dat_model이란
 																// 이름으로 저장된다.
 		String command = path + "svm_multiclass_learn -c 5000 " + path + trainData + " " + resultModelPath;
-		System.out.println("learn command: "+command);
+//		System.out.println("learn command: "+command);
 		executeSystemCommand(command);
 		return resultModelPath;
 	}
@@ -42,7 +42,7 @@ public class Classifier {
 	public static String classify(String testData, String modelPath, String pred) {
 		// model을 사용해 style을 분류하는 작업이다.
 		// testData string으로 테스트 데이터를 로컬에 만든다.
-		System.out.println("svm classify model 위치 : " + modelPath + "\n  testData String : " + testData + "...");
+//		System.out.println("svm classify model 위치 : " + modelPath + "\n  testData String : " + testData + "...");
 		String path = "C:/svm_multiclass_windows/";
 		File file = new File(path+"/example4/testData.txt");
 		FileWriter fw;
@@ -58,7 +58,7 @@ public class Classifier {
 		String resultPath = path + "example4/" +pred;
 		//현재는 refText로 테스트하지 않고 기본 textData로 한다
 		String command = path + "svm_multiclass_classify.exe " + path+"example4/test.dat" + " " + modelPath + " " + resultPath;
-		System.out.println("learn command: "+command);
+//		System.out.println("learn command: "+command);
 
 		executeSystemCommand(command);
 		return resultPath;
@@ -102,9 +102,9 @@ public class Classifier {
 			BufferedReader stdError = new BufferedReader(new InputStreamReader(p.getErrorStream()));
 
 			// read the output from the command
-			System.out.println("Here is the standard output of the command:\n");
+//			System.out.println("Here is the standard output of the command:\n");
 			while ((s = stdInput.readLine()) != null) {
-				System.out.println(s);
+//				System.out.println(s);
 			}
 
 			// read any errors from the attempted command
