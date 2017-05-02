@@ -258,6 +258,13 @@ public class Graph2<V, E> {
 			// boolean값은 알고그래프노드인 경우만 true로 한다.
 			extendableNode = isExtendableNode(current.value, algoGraph, kGraph, false);
 			if (extendableNode != null) {
+				//점핑시 점핑 전의 연산자 노드를 false로 바꾼다.
+				//input과 output노드는 해당사항 없음
+				if(!(current.value.equals("input")||current.value.equals("output"))){
+					current.isOperator = false;
+				}
+				
+				
 				//확장한 노드와 현재 노드를 이어주는 엣지를 만든다.
 				aGraph2.addEdge2(0, "value", 1.0, current, extendableNode);
 				double weight;
