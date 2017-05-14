@@ -237,7 +237,8 @@ public class Graph2<V, E> {
 		// input의 다음 노드(연산자 노드라고 생각) 연산자 노드를 업그레이드 시킨 연산자를 만들어야 하기 때문
 		Stack<String> outputStack = new Stack<String>();
 		outputStack.push(aRef.getText());
-		outputStack.push(fromNode2.outEdge2.get(0).to_Node2.value);
+		Node2 operatorNode = (Node2) aGraph2.Node2List.get(3);
+		outputStack.push(operatorNode.getValue());
 
 		// ArrayList<Node2> arFinalKNode2List = new ArrayList<Node2>();
 		open.add(fromNode2);
