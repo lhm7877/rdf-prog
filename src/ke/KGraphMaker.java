@@ -18,6 +18,37 @@ public class KGraphMaker {
 		KGraphMaker kGraphMaker = new KGraphMaker();
 		kgraph.printGraph(kgraph);
 	}
+	public Graph2 init() {
+		Graph2 kgraph = new Graph2<>();
+		rs = ConnectionAlgoDB.getRdfs();
+		try {
+			while (rs.next()) {
+				// Node objectNode = new Node(0, rs.getString("object"), 0);
+				// Node predicateNode = new Node(0,
+				// rs.getString("predicate"),0);
+				// Node subjectNode = new Node(0, rs.getString("subject"), 0);
+				kgraph.addNode2(0, rs.getString("object"), 0,false);
+				kgraph.addNode2(1, rs.getString("predicate"), 0,true);
+				kgraph.addNode2(2, rs.getString("subject"), 0,false);
+				Node2 fromNode = null, toNode = null, totoNode = null;
+				for (int i = 0; i < kgraph.Node2List.size(); i++) {
+					if (((Node2) (kgraph.Node2List.get(i))).value.equals(rs.getString("object"))) {
+						fromNode = ((Node2) (kgraph.Node2List.get(i)));
+					} else if (((Node2) (kgraph.Node2List.get(i))).value.equals(rs.getString("predicate"))) {
+						toNode = ((Node2) (kgraph.Node2List.get(i)));
+					} else if (((Node2) (kgraph.Node2List.get(i))).value.equals(rs.getString("subject"))) {
+						totoNode = ((Node2) (kgraph.Node2List.get(i)));
+					}
+				}
+				kgraph.addEdge2(0, "value", 0.0, fromNode, toNode);
+				kgraph.addEdge2(0, "value", 0.0, toNode, totoNode);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return kgraph;
+	}
 
 	public Graph2 init(Graph2 kgraph) {
 		rs = ConnectionAlgoDB.getRdfs();

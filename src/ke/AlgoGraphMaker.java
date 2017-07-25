@@ -28,5 +28,18 @@ public class AlgoGraphMaker {
 		}
 		return aGraph;
 	}
-	
+	public Graph2 init() {
+		Graph2 aGraph = new Graph2<>();
+		rs = ConnectionAlgoDB.getAlgorithm();
+		try {
+			while (rs.next()) {
+				if (!(rs.getString("ClassName") == null || rs.getString("ClassName").equals(""))) {
+					aGraph.addNode2withInArgType(0, rs.getString("ClassName"), 0.0, true, rs.getString("InArgType"),true);
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return aGraph;
+	}
 }

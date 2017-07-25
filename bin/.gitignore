@@ -8,9 +8,11 @@
 /Objectives.class
 /Prototype.class
 /Relation.class
-/Optimizer.class
-/R.class
-/StoredProcedureTest.class
-/Test2.class
+/catalog-v001.xml
+/data.ttl
 /edu/
+/exKnowledge.ttl
+/exKnowledge2.ttl
 /ke/
+/myrules.rules
+/tutorial/

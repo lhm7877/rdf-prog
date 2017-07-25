@@ -97,6 +97,39 @@ public class Graph2<V, E> {
 		to_Node2.inEdge2.add(Edge2);
 		Edge2List.add(Edge2);
 	}
+	public static void makeProblemGraph(Object input, Object operator, Object output){
+		Graph2 graph = new Graph2();
+		graph.open = new PriorityQueue<Node2>(new Comparator() {
+			@Override
+			public int compare(Object o1, Object o2) {
+				Node2 c1 = (Node2) o1;
+				Node2 c2 = (Node2) o2;
+
+				return c1.fScore < c2.fScore ? -1 : c1.fScore > c2.fScore ? 1 : 0;
+			}
+		});
+		graph.addNode2(0, "inputNode", 1.0,false);
+		graph.addNode2(1, "input", 1.0,true);
+		graph.addNode2(2, "inArg", 1.0,false);
+		graph.addNode2(3, "InfoExtract", 1.0,true);
+		graph.addNode2(4, "outArg", 1.0,false);
+		graph.addNode2(5, "output", 1.0,true);
+		graph.addNode2(6, "outputNode", 1.0,false);
+
+		// 2번 방법
+		graph.addEdge2(0, "in", 1.0, (Node2)graph.Node2List.get(0), (Node2)graph.Node2List.get(1));
+		graph.addEdge2(1, "out", 1.0, (Node2)graph.Node2List.get(1), (Node2)graph.Node2List.get(2));
+		graph.addEdge2(2, "out", 1.0, (Node2)graph.Node2List.get(2), (Node2)graph.Node2List.get(3));
+		graph.addEdge2(3, "out", 999.0, (Node2)graph.Node2List.get(3), (Node2)graph.Node2List.get(4));
+		graph.addEdge2(4, "out", 1.0, (Node2)graph.Node2List.get(4), (Node2)graph.Node2List.get(5));
+		graph.addEdge2(5, "out", 1.0, (Node2)graph.Node2List.get(5), (Node2)graph.Node2List.get(6));
+
+
+		Node2 fromNode2 = (Node2)graph.Node2List.get(0);
+		Node2 endNode2 = (Node2)graph.Node2List.get(6);
+		
+		Graph2.pathFindingAStar("박성희, (2016), \"KE\", 정보관리학회, 33, (3), pp. 22-40 ",graph, fromNode2, endNode2,new AlgoGraphMaker().init(),new KGraphMaker().init());		
+	}
 
 	public static Node2 isExtendableNode(String currentValue, Graph2 algoGraph, Graph2<?, ?> kGraph, boolean algoFlag) {
 		Iterator<Node2> itr = algoGraph.Node2List.iterator();
@@ -196,38 +229,30 @@ public class Graph2<V, E> {
 		return stack;
 	}
 
-	public static void applyKnowledgeNode(Stack pathStack, Stack<String> outputStack) {
+	public static void applyKnowledgeNode(Stack pathStack, Stack<String> outputStack, Graph2 kGraph) {
 		ConnectionAlgoDB connectionAlgoDB = new ConnectionAlgoDB();
 		// TODO 해결 : 제일 아래 노드인 String 노드를 하드코딩해서 추가시킴 -> pathStack의 마지막 노드의 값을
 		// 추가
-		// outputStack.push("String");
 		if (!pathStack.isEmpty()) {
 			Edge2 tempEdge = (Edge2) pathStack.pop();
 			outputStack.push(tempEdge.to_Node2.value);
 		}
 		// to_Node2가 아래 노드 from_Node2가 위에 노드
 		while (!pathStack.isEmpty()) {
-			// Operator operator = new Operator();
 			Edge2 temp = (Edge2) pathStack.pop();
-//			System.out.println(temp.to_Node2.value + " .pop()");
-			// 마지막 노드 실행
+//			temp.to_Node2.
 			if (temp.to_Node2.isOperator) {
-//				System.out.println("연산자 : " + temp.to_Node2.value);
-				String result =connectionAlgoDB.execute(temp.to_Node2.value, outputStack, temp.from_Node2.value); 
+				String result =connectionAlgoDB.execute(temp.to_Node2.value, outputStack, temp.from_Node2.value);  
 				if(result != null){
 					outputStack.push(result);
 				}
 				
 			} else if (!temp.to_Node2.isOperator) {
-//				System.out.println("피연산자 : " + temp.to_Node2.value);
 			}
-//			if(pathStack.isEmpty()){
-//				connectionAlgoDB.equals(temp.from_Node2.value, outputStack, temp.)
-//			}
 		}
 	}
 
-	public static void pathFindingAStar(addition.Ref aRef,Graph2 aGraph2, Node2 fromNode2,
+	public static void pathFindingAStar(String refText,Graph2 aGraph2, Node2 fromNode2,
 			Node2 endNode2, Graph2 algoGraph, Graph2 kGraph) {
 
 		// 아래 코드들이 필요한가?
@@ -236,9 +261,12 @@ public class Graph2<V, E> {
 		// input의 다음 노드를 제일 아래에 깔아둔다(여기선 infoExtract)
 		// input의 다음 노드(연산자 노드라고 생각) 연산자 노드를 업그레이드 시킨 연산자를 만들어야 하기 때문
 		Stack<String> outputStack = new Stack<String>();
-		outputStack.push(aRef.getText());
+		
 		Node2 operatorNode = (Node2) aGraph2.Node2List.get(3);
 		outputStack.push(operatorNode.getValue());
+		
+//		outputStack.push("초기crfpath는 없다");//2017.07.05 infoextract실행을위해
+		outputStack.push(refText);//원래는 input으로 집어넣는다.
 
 		// ArrayList<Node2> arFinalKNode2List = new ArrayList<Node2>();
 		open.add(fromNode2);
@@ -309,7 +337,7 @@ public class Graph2<V, E> {
 					// stack = searchFinalNode(aNode2);
 				}
 //				System.out.println("stack 꺼내기");
-				applyKnowledgeNode(historystack, outputStack);
+				applyKnowledgeNode(historystack, outputStack,kGraph);
 			}
 			// for(int i =0; i<stack.size(); i++){
 			// System.out.println(stack.pop().value+"스택");

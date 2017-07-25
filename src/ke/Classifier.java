@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import addition.ConnectionAlgoDB;
+import weka.core.Instances;
 
 // 원래는 DB로부터 가져와야 하는 것
 public class Classifier {
@@ -22,7 +23,7 @@ public class Classifier {
 
 	public static String getTrainData(String queryTrainData) {
 		// DB에서 TrainData를 가져와 로컬에 생성 후 path를 가져온다.
-		return "example4/train.dat";
+		return "C:/weka-3.7.3.jar/citationstyle_training_dataset.arff";
 	}
 
 	public static String learn(String trainData) {
@@ -121,6 +122,14 @@ public class Classifier {
 			e.printStackTrace();
 			System.exit(-1);
 		}
+	}
+	
+	public static String classifyWithWeka(String dataPath){
+		Instances data = DataSourceLoader.DataSourceLoader(dataPath);
+		data = StringToWordVectorLoader.StringToWordVectorLoader(data);
+		data = ClassAssignerLoader.ClassAssignerLoader(data);
+		RandomForestLoader.RandomForestLoader(data);
+		return "IEEE";
 	}
 
 	public static void main(String[] args) {
