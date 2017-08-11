@@ -20,6 +20,12 @@ public class Classifier {
 	public Classifier() {
 		// TODO Auto-generated constructor stub
 	}
+	public String Classifier(Object input){
+		String InfoExtract_Style_Train_Data = Classifier.getTrainData((addition.Ref_Style)input.getText());
+		String classifiedValue = Classifier.classifyWithWeka(InfoExtract_Style_Train_Data);
+		String crfModelPath = Classifier.getCRFModelPath(classifiedValue); // ref에 style 이름
+		return crfModelPath;
+	}
 
 	public static String getTrainData(String queryTrainData) {
 		// DB에서 TrainData를 가져와 로컬에 생성 후 path를 가져온다.

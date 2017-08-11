@@ -86,7 +86,7 @@ public class InfoExtract {
 		RefSet aRefSet = new RefSet();
 		CRFmodel aCRFmodel = new CRFmodel();
 		InfoExtract aInfoEx = new InfoExtract();
-		aInfoEx.InfoExtract(aRefSet, aCRFmodel);
+//		aInfoEx.InfoExtract(aRefSet, aCRFmodel);
 	}
 
 }
